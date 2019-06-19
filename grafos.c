@@ -127,7 +127,7 @@ int verticeBusca(GRAFO *g, char *palavra){
         }
     }
 
-    _BUSCA_FAIL_
+    //_BUSCA_FAIL_
     return -1;
 }
 
@@ -135,7 +135,7 @@ void verticeInsere(GRAFO *g, char *palavra) {
     int posicao = verticeBusca(g, palavra);
 
     if(posicao != -1){
-        if(DEBUG){printf("- Vertice ja inserido no grafo!\n");}
+        //if(DEBUG){printf("- Vertice ja inserido no grafo!\n");}
         return;
     }
 
@@ -145,7 +145,7 @@ void verticeInsere(GRAFO *g, char *palavra) {
         strcpy(g->vertices[posicao].palavra, palavra);
         g->qtdVertices++;
     } else{
-        if(DEBUG){printf("- Nao ha vertices nulos no grafo!\n");}
+        //if(DEBUG){printf("- Nao ha vertices nulos no grafo!\n");}
     }
 }
 

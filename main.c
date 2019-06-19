@@ -1,41 +1,57 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "grafos.h"
+
+#define MAX 500
+
 
 int main() {
 
-    char **frase;
-    frase = (char**) malloc(5 * sizeof(char*));
-    for(int i = 0; i < 5; i++){
-        frase[i] = (char*) malloc(50 * sizeof(char));
-        scanf("%s", frase[i]);
-    }
-
     GRAFO* grafo = grafoCria();
-    verticeInsere(grafo, ":ini");
-    verticeInsere(grafo, ":fim");
 
-    for (int i = 0; i < 5; ++i) {
-        verticeInsere(grafo, frase[i]);
+    char buffer[500]; // Máximo de 500 chars por frase
+    FILE * dicionario;
+    dicionario = fopen("corrupcao.txt","r"); // Nome padrao
+    if (dicionario ==  NULL)
+    {
+        return 1;
     }
-
-    for (int i = 0; i < 5; ++i) {
-        int j = (i+1);
-        if(i == 0) arestaInsere(grafo, verticeBusca(grafo,":ini"), verticeBusca(grafo, frase[i]));
-        if(j == 5) arestaInsere(grafo, verticeBusca(grafo,frase[i]), verticeBusca(grafo, ":fim"));
-        else {
-            arestaInsere(grafo, verticeBusca(grafo, frase[i]), verticeBusca(grafo, frase[j]));
+    char primeiraPalavra[MAX] = "\0";
+    char auxProx[MAX] = "\0";
+    int i = 0;
+    int j = 0;
+    char c;
+    int origem, destino;
+    while (c != EOF)
+    {
+        if (strcmp(auxProx, "\0") == 0) // Se não houver próxima, é porque é a primeira da frase
+        {
+            fscanf(dicionario,"%s",primeiraPalavra);
+        }
+        else
+        {
+            strcpy(primeiraPalavra,auxProx);
+        }
+        c = fgetc(dicionario);
+        if (c != 0xD) // Número binário para compatibilidade com Linux
+        {
+            fscanf(dicionario,"%s",auxProx);
+            /* Implementar a busca antes para evitar as mensagens de erro*/
+            verticeInsere(grafo, primeiraPalavra);
+            verticeInsere(grafo, auxProx);
+            origem = verticeBusca(grafo, primeiraPalavra);
+            destino = verticeBusca(grafo, auxProx);
+            arestaInsere(grafo, origem, destino);
+            printf("%s %s\n",primeiraPalavra,auxProx);
+        }
+        else
+        {
+            strcpy(auxProx,"\0"); //Reset implicito
         }
     }
 
     grafoPrint(grafo);
-
     grafoApaga(grafo);
-
-
-    for(int i = 0; i < 5; i++){
-        free(frase[i]);
-    }
-    free(frase);
-
     return 0;
 }

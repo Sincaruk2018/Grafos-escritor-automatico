@@ -8,7 +8,7 @@
 #include "errorgrafos.h"
 
 //Numeros
-#define MaxNumVert 100
+#define MaxNumVert 500
 
 //Caracteres
 #define TRASH '@'
