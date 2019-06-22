@@ -1,41 +1,64 @@
 #include <stdio.h>
 #include "grafos.h"
 
+#define MAX_PALAVRAS 10
+
 int main() {
 
-    char **frase;
-    frase = (char**) malloc(5 * sizeof(char*));
-    for(int i = 0; i < 5; i++){
-        frase[i] = (char*) malloc(50 * sizeof(char));
-        scanf("%s", frase[i]);
-    }
+    GRAFO* g = grafoCria();
+    verticeInsere(g, ":ini");
+    verticeInsere(g, ":fim");
 
-    GRAFO* grafo = grafoCria();
-    verticeInsere(grafo, ":ini");
-    verticeInsere(grafo, ":fim");
+    char **frase = (char**) malloc(sizeof(char*));
 
-    for (int i = 0; i < 5; ++i) {
-        verticeInsere(grafo, frase[i]);
-    }
+    for (int rept = 0; rept < 3; rept++) {
+        int qtdPalavra = 0;
+        char palavra[50];
 
-    for (int i = 0; i < 5; ++i) {
-        int j = (i+1);
-        if(i == 0) arestaInsere(grafo, verticeBusca(grafo,":ini"), verticeBusca(grafo, frase[i]));
-        if(j == 5) arestaInsere(grafo, verticeBusca(grafo,frase[i]), verticeBusca(grafo, ":fim"));
-        else {
-            arestaInsere(grafo, verticeBusca(grafo, frase[i]), verticeBusca(grafo, frase[j]));
+        char letra;
+        int posLetra = 0;
+        do{
+
+            letra =(char) getchar();
+            if (letra == ' ' || letra == '\n'){
+                if (posLetra != 0) {
+                    palavra[posLetra] = '\0';
+                    printf("[%s]\n", palavra);
+                    posLetra = 0;
+
+                    qtdPalavra++;
+                    frase = realloc(frase, qtdPalavra * sizeof(char*));
+                    frase[qtdPalavra-1] =(char*) malloc(50 * sizeof(char));
+                    strcpy(frase[qtdPalavra-1], palavra);
+                }
+            } else{
+                palavra[posLetra] = letra;
+                posLetra++;
+            }
+
+        }while (letra != '\n');
+
+        for(int i = 0; i < qtdPalavra; i++){
+            verticeInsere(g, frase[i]);
+        }
+
+        for(int i = 0; i < qtdPalavra; i++){
+            int j = i+1;
+            if(i == 0) arestaInsere(g, verticeBusca(g,":ini"), verticeBusca(g,frase[i]));
+            if( j == qtdPalavra) arestaInsere(g, verticeBusca(g, frase[i]), verticeBusca(g, ":fim"));
+            else arestaInsere(g, verticeBusca(g,frase[i]), verticeBusca(g, frase[j]));
+
+            free(frase[i]);
         }
     }
 
-    grafoPrint(grafo);
+    grafoPrint(g);
 
-    grafoApaga(grafo);
+    Djokstra(g, verticeBusca(g,":ini"), verticeBusca(g,":fim"));
 
-
-    for(int i = 0; i < 5; i++){
-        free(frase[i]);
-    }
     free(frase);
+
+    grafoApaga(g);
 
     return 0;
 }
