@@ -259,17 +259,19 @@ void Djokstra(GRAFO *g, int vertInicial, int vertFim){
 
     while(!ListaVazia(lista)){
         int atual = ListaRemove(lista);
+        int pesoComparacao = 100;
 
         ARESTA* aresta = g->vertices[atual].ini->prox;
         while (aresta != NULL){
+            pesoComparacao = MaxNumVert - aresta->peso;
 
             if(g->vertices[aresta->vizinho].cor == BRANCO){
                 g->vertices[aresta->vizinho].cor = CINZA;
-                ListaInsere(lista, aresta->vizinho, aresta->peso);
+                ListaInsere(lista, aresta->vizinho, pesoComparacao);
             }
 
-            if(distancia[aresta->vizinho] > distancia[atual] + aresta->peso){
-                distancia[aresta->vizinho] = distancia[atual] + aresta->peso;
+            if(distancia[aresta->vizinho] > distancia[atual] + pesoComparacao){
+                distancia[aresta->vizinho] = distancia[atual] + pesoComparacao;
                 antecessor[aresta->vizinho] = atual;
             }
 
@@ -289,6 +291,10 @@ void Djokstra(GRAFO *g, int vertInicial, int vertFim){
 
     free(antecessor);
     free(distancia);
+
+    for (int i = 0; i < MaxNumVert; ++i) {
+        g->vertices[i].cor = BRANCO;
+    }
 
 }
 

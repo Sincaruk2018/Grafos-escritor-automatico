@@ -9,8 +9,8 @@
 #include "lista.h"
 
 //Numeros
-#define MaxNumVert 100
-#define ValorBemGrande 1000
+#define MaxNumVert 500
+#define ValorBemGrande 100000
 
 //Caracteres
 #define TRASH '@'

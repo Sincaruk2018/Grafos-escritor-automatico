@@ -1,7 +1,13 @@
 #include <stdio.h>
 #include "grafos.h"
 
-#define MAX_PALAVRAS 10
+void printIntro(){
+    printf("Trabalho Final da Materia de Grafos, 2019\n");
+    printf("Feito Por\n");
+    printf("\t- Maurilio M. Meireles\n");
+    printf("\t- Luiz G. S. Vieira\n\n");
+    printf("Corretor Automatico\n");
+}
 
 int main() {
 
@@ -10,6 +16,8 @@ int main() {
     verticeInsere(g, ":fim");
 
     char **frase = (char**) malloc(sizeof(char*));
+
+    printIntro();
 
     for (int rept = 0; rept < 3; rept++) {
         int qtdPalavra = 0;

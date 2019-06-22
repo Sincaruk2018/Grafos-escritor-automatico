@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 
-#define DEBUG 1
+#define DEBUG 0
 
 #define _ERROR_GRAFO_NULO_ if(DEBUG){printf("[WARNING]\tO grafo acessado eh nulo!\n");}
 #define _ERROR_ARESTA_NULA_ if(DEBUG){printf("[WARNING]\tA aresta acessada eh nula!\n");}
