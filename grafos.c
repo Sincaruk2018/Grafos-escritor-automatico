@@ -220,4 +220,82 @@ void arestaRemove(GRAFO *g, int origem, int destino) {
     }
 
 }
+
+//Tentar Djikstra
+void Djokstra(GRAFO *g, int vertInicial, int vertFim){
+
+    if(g->qtdVertices < 1){
+        if (DEBUG) printf("Erro, não há vertices suficientes para realizar a ação!");
+        return;
+    }
+
+    if(vertInicial < 0 || vertInicial > MaxNumVert){
+        if (DEBUG) printf("Erro, o vertice inicial escolhido não é valido!");
+        return;
+    }
+
+    if(vertFim < 0 || vertFim > MaxNumVert){
+        if (DEBUG) printf("Erro, o vertice final escolhido não é valido!");
+        return;
+    }
+
+    printf("qtd de vertices: %d\n", g->qtdVertices);
+
+    int *antecessor = (int*)malloc(g->qtdVertices * sizeof(int));
+    int *distancia = (int*)malloc(g->qtdVertices * sizeof(int));
+
+    antecessor[vertInicial] = vertInicial;
+
+    for(int i = 0; i < g->qtdVertices; i++){
+        distancia[i] = ValorBemGrande;
+    }
+
+    distancia[vertInicial] = 0;
+    antecessor[vertInicial] = -1;
+
+    LISTA* lista = ListaCria();
+    ListaInsere(lista, vertInicial, 0);
+    g->vertices[vertInicial].cor = CINZA;
+
+    while(!ListaVazia(lista)){
+        int atual = ListaRemove(lista);
+        int pesoComparacao = 100;
+
+        ARESTA* aresta = g->vertices[atual].ini->prox;
+        while (aresta != NULL){
+            pesoComparacao = MaxNumVert - aresta->peso;
+
+            if(g->vertices[aresta->vizinho].cor == BRANCO){
+                g->vertices[aresta->vizinho].cor = CINZA;
+                ListaInsere(lista, aresta->vizinho, pesoComparacao);
+            }
+
+            if(distancia[aresta->vizinho] > distancia[atual] + pesoComparacao){
+                distancia[aresta->vizinho] = distancia[atual] + pesoComparacao;
+                antecessor[aresta->vizinho] = atual;
+            }
+
+            aresta = aresta->prox;
+        }
+        g->vertices[atual].cor = PRETO;
+
+    }
+    ListaApaga(lista);
+
+    printf("%s[%d] ->",g->vertices[vertFim].palavra, vertFim);
+    int eu = antecessor[vertFim];
+    while(eu != -1){
+        printf("%s[%d] ->",g->vertices[eu].palavra, eu);
+        eu = antecessor[eu];
+    }
+
+    free(antecessor);
+    free(distancia);
+
+    for (int i = 0; i < MaxNumVert; ++i) {
+        g->vertices[i].cor = BRANCO;
+    }
+
+}
+
 /*====================================================================================================================*/

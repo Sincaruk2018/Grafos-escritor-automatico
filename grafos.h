@@ -6,9 +6,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include "errorgrafos.h"
+#include "lista.h"
 
 //Numeros
-#define MaxNumVert 100
+#define MaxNumVert 500
+#define ValorBemGrande 100000
 
 //Caracteres
 #define TRASH '@'
@@ -40,5 +42,8 @@ int verticeBusca(GRAFO *g, char *palavra);
 void arestaInsere(GRAFO *g, int origem, int destino);
 
 void arestaRemove(GRAFO *g, int origem, int destino);
+
+//Djikstra
+void Djokstra(GRAFO *g, int vertInicial, int vertFim);
 
 #endif //GRAFOPROJETO_GRAFOS_H
