@@ -1,26 +1,34 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "grafos.h"
-
 #define MAX 500
 
+void printIntro(){
+    printf("Trabalho Final da Materia de Grafos, 2019\n");
+    printf("Feito Por\n");
+    printf("\t- Maurilio M. Meireles\n");
+    printf("\t- Luiz G. S. Vieira\n\n");
+    printf("Corretor Automatico\n");
+}
 
 int main() {
 
-    GRAFO* grafo = grafoCria();
+    GRAFO* g = grafoCria();
+    verticeInsere(g, ":ini");
+    verticeInsere(g, ":fim");
 
-    char buffer[500]; // Máximo de 500 chars por frase
+    char **frase = (char**) malloc(sizeof(char*));
+
+    printIntro();
+
+
     FILE * dicionario;
-    dicionario = fopen("corrupcao.txt","r"); // Nome padrao
+    dicionario = fopen("Others/arquivo.txt","r"); // Nome padrao
     if (dicionario ==  NULL)
     {
         return 1;
     }
     char primeiraPalavra[MAX] = "\0";
     char auxProx[MAX] = "\0";
-    int i = 0;
-    int j = 0;
     char c;
     int origem, destino;
     while (c != EOF)
@@ -38,12 +46,11 @@ int main() {
         {
             fscanf(dicionario,"%s",auxProx);
             /* Implementar a busca antes para evitar as mensagens de erro*/
-            verticeInsere(grafo, primeiraPalavra);
-            verticeInsere(grafo, auxProx);
-            origem = verticeBusca(grafo, primeiraPalavra);
-            destino = verticeBusca(grafo, auxProx);
-            arestaInsere(grafo, origem, destino);
-            printf("%s %s\n",primeiraPalavra,auxProx);
+            verticeInsere(g, primeiraPalavra);
+            verticeInsere(g, auxProx);
+            origem = verticeBusca(g, primeiraPalavra);
+            destino = verticeBusca(g, auxProx);
+            arestaInsere(g, origem, destino);
         }
         else
         {
@@ -51,7 +58,13 @@ int main() {
         }
     }
 
-    grafoPrint(grafo);
-    grafoApaga(grafo);
+    grafoPrint(g);
+
+    Djokstra(g, verticeBusca(g,":ini"), verticeBusca(g,":fim"));
+
+    free(frase);
+
+    grafoApaga(g);
+
     return 0;
 }
