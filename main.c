@@ -60,9 +60,11 @@ int main() {
         }
     }
 
-    grafoPrint(g);
-
-    Djokstra(g, verticeBusca(g,":ini"), verticeBusca(g,":fim"));
+    //grafoPrint(g);
+    char ini[50], fim[50];
+    scanf("%s", ini);
+    scanf("%s",fim);
+    Djokstra(g, verticeBusca(g,ini), verticeBusca(g,fim));
 
     free(frase);
 
